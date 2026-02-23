@@ -144,6 +144,7 @@ sudo tail -20 /var/log/nginx/error.log
 ### Screenshot 1: System Information (CPU, RAM, Disk)
 
 **Location:** `./screenshots/system-info.png`
+![https://github.com/AlirezaArdani/Devops-Tasks/blob/initial-task/screenshots/system-info.png]
 
 **What to capture:**
 - CPU model and core count from `lscpu`
