@@ -48,5 +48,8 @@ printf "%-10s %-15s %-40s\n" "hi" "Hardware IRQ" "Time servicing hardware interr
 printf "%-10s %-15s %-40s\n" "si" "Software IRQ" "Time servicing software interrupts"
 printf "%-10s %-15s %-40s\n" "st" "Steal" "Time stolen by hypervisor (VMs only)"
 echo ""
-print_info "${PURPLE}========== RAM Information ===========${NC}"
+print_info "${PURPLE}========== RAM Usage Information ===========${NC}"
+free -h
+echo ""
+print_info "${PURPLE}========== DISK Space Information ===========${NC}"
 
