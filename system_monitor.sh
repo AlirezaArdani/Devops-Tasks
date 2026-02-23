@@ -104,6 +104,15 @@ else
     echo "$HTML_CONTENT" > "$WEB_DEST_DIR/index.html"
     print_success "Default HTML page created."
 fi
+# --- Check Nginx Status ---
+print_info "${PURPLE}=============== NginX Service Status ===============${NC}"
+if systemctl is-active --quiet nginx; then
+    print_success "${GREEN}NginX is Active and Running on Port 80${NC}"
+else
+    print_error "${RED}NginX Failed to Start.${NC}"
+    systemctl status nginx
+    exit 1
+fi
 
 
 
