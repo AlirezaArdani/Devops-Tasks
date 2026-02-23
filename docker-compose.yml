@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  webserver:
+    build: .
+    container_name: nginx-server
+    ports:
+      - "8080:80"
+    restart: unless-stopped 
+    networks:
+      - nginx_redis_network
+    depends_on:
+      - redis
+    # volume or workdir in dockerfile
+
+  redis:
+    image: redis:latest
+    container_name: redis-cache
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    networks:
+      - nginx_redis_network
+    volumes:
+      - redis-data:/data
+
+networks:
+  nginx_redis_network:
+    driver: bridge
+volumes:
+  redis-data:
+    driver: local
