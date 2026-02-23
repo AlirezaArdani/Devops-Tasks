@@ -78,32 +78,55 @@ else
     	exit 1
     fi
 fi
+
+
 # --- Create Simple HTML Page ---
 print_info "${PURPLE}=============== Deploying HTML Page ===============${NC}"
 # Define source and destination
-WEB_SOURCE_DIR="./web-files"  # Change this to your actual folder
+
+WEB_SOURCE_DIR="./web-files"
 WEB_DEST_DIR="/var/www/html"
 
-
-# Check if source directory exists
 if [ -d "$WEB_SOURCE_DIR" ]; then
     # Backup existing files
     if [ -f "$WEB_DEST_DIR/index.html" ]; then
         print_info "Backing up existing web files..."
-        cp -r "$WEB_DEST_DIR" "${WEB_DEST_DIR}.backup.$(date +%Y%m%d_%H%M%S)"
+        BACKUP_NAME="${WEB_DEST_DIR}.backup.$(date +%Y%m%d_%H%M%S)"
+        cp -r "$WEB_DEST_DIR" "$BACKUP_NAME"
+        print_info "Backup created: $BACKUP_NAME"
     fi
     
-    # Copy new files
+    # Copy files
     print_info "Copying web files to $WEB_DEST_DIR..."
     cp -r "$WEB_SOURCE_DIR"/* "$WEB_DEST_DIR/"
-    print_success "Web files deployed successfully."
+    
+    # Verify deployment
+    if [ -f "$WEB_DEST_DIR/index.html" ]; then
+        print_success "index.html deployed successfully."
+    else
+        print_error "index.html not found after copy!"
+        exit 1
+    fi
+    
+    if [ -f "$WEB_DEST_DIR/script.js" ]; then
+        print_success "script.js deployed successfully."
+    fi
 else
-    print_error "Web files directory ($WEB_SOURCE_DIR) not found!"
-    print_info "Creating default index.html..."
-    HTML_CONTENT="<canvas id="web"></canvas>"
-    echo "$HTML_CONTENT" > "$WEB_DEST_DIR/index.html"
-    print_success "Default HTML page created."
+    print_error "Source directory ($WEB_SOURCE_DIR) not found!"
+    print_info "Creating a default fallback page..."
+    
+    # Fallback HTML if source is missing
+    cat > "$WEB_DEST_DIR/index.html" << 'EOF'
+<!DOCTYPE html><html><head><title>Server Running</title></head>
+<body style="font-family:sans-serif; text-align:center; padding:50px;">
+<h1>🎉 Nginx is Running!</h1>
+<p>Upload your files to ./web-files/ and re-run the script.</p>
+</body></html>
+EOF
+    print_success "Fallback page created."
 fi
+
+
 # --- Check Nginx Status ---
 print_info "${PURPLE}=============== NginX Service Status ===============${NC}"
 if systemctl is-active --quiet nginx; then
