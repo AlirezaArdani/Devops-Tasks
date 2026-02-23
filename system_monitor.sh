@@ -61,7 +61,7 @@ print_success "${GREEN}=============== System Resources Checked ===============$
 echo -e "Starting NginX Service...............\n" 
 print_info "${PURPLE}=============== Nginx Installation Check ===============${NC}"
 
-# check id nginx installed or not
+# check if nginx installed or not
 if command -v nginx &> /dev/null; then
     print_success "NginX is already installed!"
     NGINX_VERSION=$(nginx -v 2>&1)
@@ -126,6 +126,22 @@ EOF
     print_success "Fallback page created."
 fi
 
+# --- Set Permissions ---
+print_info "${PURPLE}=============== Setting Permissions ===============${NC}"
+#chown -R www-www-data "$WEB_DEST_DIR"
+chmod -R 755 "$WEB_DEST_DIR"
+# Ensure specific files are readable
+find "$WEB_DEST_DIR" -name "*.js" -o -name "*.css" -o -name "*.html" | xargs chmod 644
+print_success "Permissions set correctly."
+
+
+
+# --- Start and Enable Nginx ---
+print_info "${CYAN}=============== Starting Nginx Service ===============${NC}"
+systemctl start nginx
+systemctl enable nginx
+print_success "${GREEN}Nginx service started and enabled."
+
 
 # --- Check Nginx Status ---
 print_info "${PURPLE}=============== NginX Service Status ===============${NC}"
@@ -137,8 +153,27 @@ else
     exit 1
 fi
 
+# --- Health Check ---
+print_info "=============== Verifying Server ==============="
+sleep 2 # Wait for startup
 
+if curl -s -o /dev/null -w "%{http_code}" http://localhost | grep -q "200"; then
+    print_success "✓ Server is responding (HTTP 200)"
+else
+    print_error "✗ Server failed to respond"
+    systemctl status nginx --no-pager
+    exit 1
+fi
 
-
+# --- Final Output ---
+SERVER_IP=$(hostname -I | awk '{print $1}')
+echo ""
+print_success "=============================================="
+print_success "All Tasks Completed Successfully!"
+print_success "=============================================="
+print_info "🌐 Access your website:"
+print_info "   Local:  http://localhost"
+print_info "   Remote: http://$SERVER_IP"
+echo ""
 
 
