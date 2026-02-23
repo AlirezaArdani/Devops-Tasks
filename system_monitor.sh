@@ -7,6 +7,8 @@ echo -e "Fetching System Information...............\n"
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+PURPLE='\033[0;35m'
+CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
 
@@ -26,10 +28,25 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-print_info "=============== CPU and RAM Information ==========="
+print_info "${PURPLE}========== CPU Information ===========${NC}"
 lscpu | head -20
 echo "" 
-print_info "=============== Process Status Report =========="
+print_info "${PURPLE}========== Process Status Report ==========${NC}"
 echo ""
 top -bn1 | grep "Cpu(s)"
 echo ""
+# --- Display CPU Metrics Explanation Table ---
+print_info "${CYAN}=============== CPU Metrics Explanation ==========${NC}"
+printf "%-10s %-15s %-40s\n" "Metric" "Full Name" "Description"
+printf "%-10s %-15s %-40s\n" "------" "---------" "-----------"
+printf "%-10s %-15s %-40s\n" "us" "User" "Time spent on user applications"
+printf "%-10s %-15s %-40s\n" "sy" "System" "Time spent on kernel processes"
+printf "%-10s %-15s %-40s\n" "ni" "Nice" "Time on processes with altered priority"
+printf "%-10s %-15s %-40s\n" "id" "Idle" "Time spent idle (doing nothing)"
+printf "%-10s %-15s %-40s\n" "wa" "IO Wait" "Time waiting for I/O operations"
+printf "%-10s %-15s %-40s\n" "hi" "Hardware IRQ" "Time servicing hardware interrupts"
+printf "%-10s %-15s %-40s\n" "si" "Software IRQ" "Time servicing software interrupts"
+printf "%-10s %-15s %-40s\n" "st" "Steal" "Time stolen by hypervisor (VMs only)"
+echo ""
+print_info "${PURPLE}========== RAM Information ===========${NC}"
+
