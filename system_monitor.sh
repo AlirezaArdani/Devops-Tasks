@@ -62,7 +62,7 @@ echo -e "Starting NginX Service...............\n"
 print_info "${PURPLE}=============== Nginx Installation Check ===============${NC}"
 
 # check id nginx installed or not
-if command -v nginx $> /dev/null; then
+if command -v nginx &> /dev/null; then
     print_success "NginX is already installed!"
     NGINX_VERSION=$(nginx -v 2>&1)
     print_info "${CYAN}Version: $NGINX_VERSION${NC}"
@@ -80,7 +80,30 @@ else
 fi
 # --- Create Simple HTML Page ---
 print_info "${PURPLE}=============== Deploying HTML Page ===============${NC}"
+# Define source and destination
+WEB_SOURCE_DIR="./web-files"  # Change this to your actual folder
+WEB_DEST_DIR="/var/www/html"
 
+
+# Check if source directory exists
+if [ -d "$WEB_SOURCE_DIR" ]; then
+    # Backup existing files
+    if [ -f "$WEB_DEST_DIR/index.html" ]; then
+        print_info "Backing up existing web files..."
+        cp -r "$WEB_DEST_DIR" "${WEB_DEST_DIR}.backup.$(date +%Y%m%d_%H%M%S)"
+    fi
+    
+    # Copy new files
+    print_info "Copying web files to $WEB_DEST_DIR..."
+    cp -r "$WEB_SOURCE_DIR"/* "$WEB_DEST_DIR/"
+    print_success "Web files deployed successfully."
+else
+    print_error "Web files directory ($WEB_SOURCE_DIR) not found!"
+    print_info "Creating default index.html..."
+    HTML_CONTENT="<canvas id="web"></canvas>"
+    echo "$HTML_CONTENT" > "$WEB_DEST_DIR/index.html"
+    print_success "Default HTML page created."
+fi
 
 
 
