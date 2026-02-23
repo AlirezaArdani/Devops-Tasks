@@ -184,6 +184,7 @@ Setting up nginx...
 ### Screenshot 3: Web Files Deployment
 
 **Location:** `./screenshots/web-deployment.png`
+
 ![Web Deployment](./screenshots/web-deployment.png)
 
 **What to capture:**
