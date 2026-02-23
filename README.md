@@ -144,7 +144,7 @@ sudo tail -20 /var/log/nginx/error.log
 ### Screenshot 1: System Information (CPU, RAM, Disk)
 
 **Location:** `./screenshots/system-info.png`
-![https://github.com/AlirezaArdani/Devops-Tasks/blob/initial-task/screenshots/system-info.png]
+![System Information](./screenshots/system-info.png)
 
 **What to capture:**
 - CPU model and core count from `lscpu`
@@ -162,6 +162,7 @@ sudo ./system_monitor.sh | tee output.log
 ### Screenshot 2: Nginx Installation Process
 
 **Location:** `./screenshots/nginx-install.png`
+![Nginx Installation](./screenshots/nginx-install.png)
 
 **What to capture:**
 - "Nginx is not installed. Starting installation..." message
@@ -183,6 +184,7 @@ Setting up nginx...
 ### Screenshot 3: Web Files Deployment
 
 **Location:** `./screenshots/web-deployment.png`
+![Web Deployment](./screenshots/web-deployment.png)
 
 **What to capture:**
 - "Deploying Web Files" section
@@ -206,6 +208,7 @@ Setting up nginx...
 ### Screenshot 4: Server Health Check & Access URLs
 
 **Location:** `./screenshots/health-check.png`
+![Health Check](./screenshots/health-check.png)
 
 **What to capture:**
 - "Verifying Server" section
@@ -228,6 +231,7 @@ Setting up nginx...
 ### Screenshot 5: Website in Browser
 
 **Location:** `./screenshots/website-browser.png`
+![Website Browser](./screenshots/website-browser.png)
 
 **What to capture:**
 - Browser showing the spider web animation
